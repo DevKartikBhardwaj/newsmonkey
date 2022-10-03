@@ -1,306 +1,102 @@
 import React, { Component } from 'react'
 import Newsitem from './Newsitem'
+import InfiniteScroll from "react-infinite-scroll-component";
+import Spinner from './Spinner'
+import PropTypes from 'prop-types';
 
 
 export default class News extends Component {
 
-  articles= [
-    {
-        "source": {
-            "id": "the-washington-post",
-            "name": "The Washington Post"
-        },
-        "author": "John Hudson",
-        "title": "Ukraine President Zelensky addresses United Nations General Assembly - The Washington Post",
-        "description": "Zelensky earned a rare standing ovation from world leaders in the U.N. General Assembly who earlier voted to allow him to address the world body remotely.",
-        "url": "https://www.washingtonpost.com/nation/2022/09/21/united-nations-zelensky/",
-        "urlToImage": "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/ONGEN2RZ6UI63OFPBICOLXB5WY.jpg&w=1440",
-        "publishedAt": "2022-09-22T00:28:22Z",
-        "content": "Ukrainian President Volodymyr Zelensky unveiled a plan to end the nearly seven-month war between Russia and Ukraine on Wednesday at the annual gathering of world leaders at the U.N. General Assembly … [+2483 chars]"
-    },
-    {
-        "source": {
-            "id": null,
-            "name": "Investor's Business Daily"
-        },
-        "author": "Investor's Business Daily",
-        "title": "Futures: Stocks Sell Off As Fed Sees New 'Terminal' Rate - Investor's Business Daily",
-        "description": "The Fed hiked rates by 75 basis points and forecast a lot more.",
-        "url": "https://www.investors.com/market-trend/stock-market-today/dow-jones-futures-stock-market-sells-off-as-hawkish-fed-sees-new-terminal-rate/",
-        "urlToImage": "https://www.investors.com/wp-content/uploads/2022/06/Stock-jeromepowell2022-05-gov.jpg",
-        "publishedAt": "2022-09-22T00:25:00Z",
-        "content": "Dow Jones futures fell modestly overnight, along with S&amp;P 500 futures and Nasdaq futures. The stock market whipsawed sharply lower Wednesday after the Federal Reserve hiked aggressively once agai… [+7526 chars]"
-    },
-    {
-        "source": {
-            "id": "reuters",
-            "name": "Reuters"
-        },
-        "author": null,
-        "title": "Russia, Ukraine announce major surprise prisoner swap - Reuters",
-        "description": "Russia and Ukraine carried out an unexpected prisoner swap on Wednesday, the largest since the war began and involving almost 300 people, including 10 foreigners and the commanders who led a prolonged Ukrainian defence of Mariupol earlier this year.",
-        "url": "https://www.reuters.com/world/europe/russia-releases-10-foreigners-captured-ukraine-after-saudi-mediation-riyadh-2022-09-21/",
-        "urlToImage": "https://www.reuters.com/resizer/Lg7NS65S7eTLiG1JqlueY7Q6fw4=/1200x628/smart/filters:quality(80)/cloudfront-us-east-2.images.arcpublishing.com/reuters/I7F4OM445JKSRPI6KQBGFYHNO4.jpg",
-        "publishedAt": "2022-09-22T00:09:00Z",
-        "content": "KYIV/RIYADH, Sept 21 (Reuters) - Russia and Ukraine carried out an unexpected prisoner swap on Wednesday, the largest since the war began and involving almost 300 people, including 10 foreigners and … [+3725 chars]"
-    },
-    {
-        "source": {
-            "id": "associated-press",
-            "name": "Associated Press"
-        },
-        "author": "Karl Ritter",
-        "title": "Putin orders partial military call-up, sparking protests - The Associated Press",
-        "description": "KYIV, Ukraine (AP) — Russian President Vladimir Putin ordered a partial mobilization of reservists Wednesday, taking a risky and deeply unpopular step that follows humiliating setbacks for his troops nearly seven months after invading Ukraine.",
-        "url": "https://apnews.com/f64f9c91f24fc81bc8cc65e8bc7748f4",
-        "urlToImage": "https://storage.googleapis.com/afs-prod/media/74de9fbee99547ab9cc94aef39e50083/3000.jpeg",
-        "publishedAt": "2022-09-22T00:07:40Z",
-        "content": "KYIV, Ukraine (AP) Russian President Vladimir Putin ordered a partial mobilization of reservists Wednesday, taking a risky and deeply unpopular step that follows humiliating setbacks for his troops n… [+7915 chars]"
-    },
-    {
-        "source": {
-            "id": "cnn",
-            "name": "CNN"
-        },
-        "author": "Katelyn Polantz, Tierney Sneed",
-        "title": "DOJ can resume criminal probe of classified documents from Mar-a-Lago, appeals court says - CNN",
-        "description": "Ruling is a strong rebuke of the Trump team's attempt to suggest without evidence that materials were somehow declassified.",
-        "url": "https://www.cnn.com/2022/09/21/politics/appeals-court-mar-a-lago-criminal-classified-documents/index.html",
-        "urlToImage": "https://media.cnn.com/api/v1/images/stellar/prod/220911212435-mar-a-lago-0815-file.jpg?q=w_800,c_fill",
-        "publishedAt": "2022-09-21T23:59:00Z",
-        "content": "A federal appeals court is allowing the Justice Department to continue looking at documents marked as classified that were seized from former President Donald Trumps Mar-a-Lago home and resort.\r\nThe … [+4222 chars]"
-    },
-    {
-        "source": {
-            "id": "cbs-news",
-            "name": "CBS News"
-        },
-        "author": null,
-        "title": "Hurricane Fiona strengthens into Category 4 storm, heads toward Bermuda after pummeling Puerto Rico and other Caribbean islands - CBS News",
-        "description": "The storm has been blamed for directly causing at least four deaths in its march through the Caribbean.",
-        "url": "https://www.cbsnews.com/news/hurricane-fiona-track-path-2022-09-21/",
-        "urlToImage": "https://assets3.cbsnewsstatic.com/hub/i/r/2022/09/21/f97b9c50-2014-4e19-ad64-6da2361971d6/thumbnail/1200x630/dd8e72d41f52afa403417e940137f27e/20222641330-goes16-abi-fd-geocolor-5424x5424-edited.jpg",
-        "publishedAt": "2022-09-21T23:07:00Z",
-        "content": "Hurricane Fiona strengthened into a Category 4 storm Wednesday after devastating Puerto Rico, then lashing the Dominican Republic and the Turks and Caicos Islands. It was forecast to squeeze past Ber… [+5985 chars]"
-    },
-    {
-        "source": {
-            "id": "the-wall-street-journal",
-            "name": "The Wall Street Journal"
-        },
-        "author": "Nick Timiraos",
-        "title": "Fed Raises Interest Rates by 0.75 Percentage Point for Third Straight Meeting - The Wall Street Journal",
-        "description": "Officials project short-term rates will rise above 4.25% by year’s end and signal further large increases at coming meetings.",
-        "url": "https://www.wsj.com/articles/fed-raises-interest-rates-by-0-75-percentage-point-for-third-straight-meeting-11663783397",
-        "urlToImage": "https://images.wsj.net/im-627085/social",
-        "publishedAt": "2022-09-21T23:04:00Z",
-        "content": null
-    },
-    {
-        "source": {
-            "id": null,
-            "name": "The Guardian"
-        },
-        "author": "Guardian staff reporter",
-        "title": "Senator Joe Manchin unveils bill that would expedite federal energy projects - The Guardian US",
-        "description": "The centrist Democrat believes he has votes to pass the measure, which has met with resistance from the left",
-        "url": "https://amp.theguardian.com/us-news/2022/sep/21/joe-manchin-energy-bill-fossil-fuels",
-        "urlToImage": null,
-        "publishedAt": "2022-09-21T22:53:00Z",
-        "content": "Joe ManchinThe centrist Democrat believes he has votes to pass the measure, which has met with resistance from the left\r\nWed 21 Sep 2022 19.34 EDT\r\nThe US senator Joe Manchin released an energy permi… [+3460 chars]"
-    },
-    {
-        "source": {
-            "id": "cnn",
-            "name": "CNN"
-        },
-        "author": "Carma Hassan",
-        "title": "Cancer death rates fall steadily in the US, with more survivors than ever - CNN",
-        "description": "More people are surviving cancer than ever before in the United States, according to a new report from the American Association for Cancer Research.",
-        "url": "https://www.cnn.com/2022/09/21/health/cancer-deaths-decline-research-report/index.html",
-        "urlToImage": "https://media.cnn.com/api/v1/images/stellar/prod/220921151046-cancer-deaths-decline-research-report-restricted.jpg?q=w_800,c_fill",
-        "publishedAt": "2022-09-21T22:47:00Z",
-        "content": "More people are surviving cancer than ever before in the United States, according to a new report from the American Association for Cancer Research.\r\nIn the past three years, the number of cancer sur… [+4802 chars]"
-    },
-    {
-        "source": {
-            "id": null,
-            "name": "CBS Sports"
-        },
-        "author": "",
-        "title": "Fantasy Football Week 3 Start 'Em & Sit 'Em: Kirk Cousins again finds his sub-prime groove - CBS Sports",
-        "description": "Players who should and should not be in your lineups for Week 3",
-        "url": "https://www.cbssports.com/fantasy/football/news/fantasy-football-week-3-start-em-sit-em-kirk-cousins-again-finds-his-sub-prime-groove/",
-        "urlToImage": "https://sportshub.cbsistatic.com/i/r/2022/09/21/c7cebb42-1f5a-4fb9-a235-4cd2595a308e/thumbnail/1200x675/f3429ab49d651b63203be587b2bfefa7/kirk-cousins-1400-us-3.jpg",
-        "publishedAt": "2022-09-21T22:31:55Z",
-        "content": "This is an interesting week for many Fantasy managers with knowing who you can trust in your lineup. We've been let down by several star players already -- see Tom Brady, Russell Wilson, Derrick Henr… [+3179 chars]"
-    },
-    {
-        "source": {
-            "id": null,
-            "name": "Page Six"
-        },
-        "author": "Eileen Reslen",
-        "title": "Tiffany Haddish claims she lost all her jobs amid child molestation lawsuit - Page Six",
-        "description": "“Oh, I lost everything. All my gigs, gone. Everything, gone,” the comedian said Wednesday after the lawsuit was dismissed. “I don’t have no job, bro.”",
-        "url": "https://pagesix.com/2022/09/21/tiffany-haddish-claims-she-lost-all-jobs-amid-child-molestation-lawsuit/",
-        "urlToImage": "https://pagesix.com/wp-content/uploads/sites/3/2022/09/tiffany-haddish_84.jpg?quality=75&strip=all&w=1200",
-        "publishedAt": "2022-09-21T22:10:00Z",
-        "content": "Tiffany Haddish claims she lost everything as a result of the now-dismissed allegations of child molestation and grooming made against her and fellow comic Aries Spears.\r\nAll my gigs, gone. Everythin… [+1553 chars]"
-    },
-    {
-        "source": {
-            "id": null,
-            "name": "AZCentral"
-        },
-        "author": "Duane Rankin, The Arizona Republic",
-        "title": "Robert Sarver announces intention to sell Phoenix Suns, Mercury - The Arizona Republic",
-        "description": "The Phoenix Suns and Mercury owner announced his intention to sell following the results of the NBA's investigation into his workplace conduct.",
-        "url": "https://www.azcentral.com/story/sports/nba/suns/2022/09/21/robert-sarver-announces-intention-sell-phoenix-suns-mercury/8073090001/",
-        "urlToImage": "https://www.gannett-cdn.com/presto/2022/09/15/PPHX/d73b81c9-8ad4-461d-a03f-666b5a31e52c-USATSI_18133230.jpg?auto=webp&crop=5513,3102,x0,y293&format=pjpg&width=1200",
-        "publishedAt": "2022-09-21T22:02:48Z",
-        "content": "Robert Sarver is bowing out.\r\nThe majority owner of the Phoenix Suns and Phoenix Mercury is \"seeking buyers\" for the two franchises a week after he was suspended for one year from any activities invo… [+5304 chars]"
-    },
-    {
-        "source": {
-            "id": null,
-            "name": "The Guardian"
-        },
-        "author": "Guardian staff reporter",
-        "title": "Neptune and its rings shown in striking new light by Webb telescope - The Guardian",
-        "description": "Farthest planet from sun and its satellites revealed in unprecedented detail by space telescope’s infrared imager",
-        "url": "https://amp.theguardian.com/science/2022/sep/21/neptune-and-its-rings-shown-in-striking-new-light-by-webb-telescope",
-        "urlToImage": null,
-        "publishedAt": "2022-09-21T21:59:00Z",
-        "content": "AstronomyFarthest planet from sun and its satellites revealed in unprecedented detail by space telescopes infrared imager\r\nWed 21 Sep 2022 22.38 BST\r\nThe James Webb space telescope has turned its gaz… [+3295 chars]"
-    },
-    {
-        "source": {
-            "id": "abc-news",
-            "name": "ABC News"
-        },
-        "author": "Tal Axelrod, Mariam Khan",
-        "title": "House passes election reform bill to curb future interference; 9 Republicans join Democrats - ABC News",
-        "description": "The legislation would alter the 135-year-old Electoral Count Act.",
-        "url": "https://abcnews.go.com/Politics/house-passes-election-reform-bill-curb-future-interference/story?id=90279129",
-        "urlToImage": "https://s.abcnews.com/images/Politics/liz-cheney-gty-jt-220921_1663790399191_hpMain_16x9_992.jpg",
-        "publishedAt": "2022-09-21T21:42:22Z",
-        "content": "The House on Wednesday approved a post-Jan. 6 election reform bill intended to blunt future challenges to presidential elections.\r\nThe Presidential Election Reform Act, crafted largely by Reps. Zoe L… [+3466 chars]"
-    },
-    {
-        "source": {
-            "id": null,
-            "name": "New York Post"
-        },
-        "author": "News.com.au",
-        "title": "New features of iPhone iOS 16 update comes at a cost, as users' batteries drain - New York Post ",
-        "description": "While some are loving the fresh design of their smartphones after downloading iOS 16, other users from across the globe have noticed that the update has come at a cost to battery life.",
-        "url": "https://nypost.com/2022/09/21/iphone-ios-16-update-comes-at-a-cost-as-users-battery-drains/",
-        "urlToImage": "https://nypost.com/wp-content/uploads/sites/2/2022/09/ios-iphone-battery-02.jpg?quality=75&strip=all&w=1024",
-        "publishedAt": "2022-09-21T21:23:00Z",
-        "content": "A bout of new features have arrived for Apple users who have installed the most recent iOS 16 update on their devices, but not all are raving about the impact its had on their phones.\r\nA customizable… [+3719 chars]"
-    },
-    {
-        "source": {
-            "id": null,
-            "name": "TMZ"
-        },
-        "author": "TMZ Staff",
-        "title": "Adam Levine and Wife Behati Prinsloo Look Unbothered by Cheating Scandal - TMZ",
-        "description": "Looks like Adam Levine and his wife are on the same page when it comes to weathering the storm of cheating allegations -- they're already laughing together, even as more women come forward.",
-        "url": "https://www.tmz.com/2022/09/21/adam-levine-behati-prinsloo-together-happy-pda-cheating-scandal/",
-        "urlToImage": "https://imagez.tmz.com/image/66/16by9/2022/09/21/666d5b3d8847467a86863c01b4bea3f3_xl.jpg",
-        "publishedAt": "2022-09-21T21:22:00Z",
-        "content": "Looks like Adam Levine and his wife are on the same page when it comes to weathering the storm of cheating allegations -- they're already laughing together, even as more women come forward.\r\nBehati P… [+971 chars]"
-    },
-    {
-        "source": {
-            "id": "usa-today",
-            "name": "USA Today"
-        },
-        "author": "John Bacon and Jorge L. Ortiz, USA TODAY",
-        "title": "Biden says Putin was 'reckless' in veiled nuclear threat, calls on UN to support Ukraine; 2 Americans captured in war freed: Updates - USA TODAY",
-        "description": "Russia has \"shamelessly\" violated core tenants of the United Nations and the world must stand behind Ukraine, President Joe Biden said. Updates.",
-        "url": "https://www.usatoday.com/story/news/world/2022/09/21/russian-president-vladimir-putin-announces-partial-mobilization/8070205001/",
-        "urlToImage": "https://www.gannett-cdn.com/presto/2022/09/21/USAT/fd506e8e-99f7-49e0-a765-0de0e43c2938-AFP_AFP_32JU7CX.jpg?auto=webp&crop=3426,1928,x0,y0&format=pjpg&width=1200",
-        "publishedAt": "2022-09-21T21:02:04Z",
-        "content": "President Joe Biden forcefully condemned the Kremlin's brutal invasion of Ukraine and urged the world to stand firm behind efforts to repel the aggression, telling the United Nations that Russian lea… [+9960 chars]"
-    },
-    {
-        "source": {
-            "id": null,
-            "name": "CNBC"
-        },
-        "author": "Michael Wayland",
-        "title": "GM to close reservations for electric Hummer pickup, SUV after topping 90,000 - CNBC",
-        "description": "The number of reservations is notable because of the starting prices of the vehicles, which range between roughly $85,000 and $111,000.",
-        "url": "https://www.cnbc.com/2022/09/21/gm-to-close-reservations-for-electric-hummer-ev-after-topping-90000.html",
-        "urlToImage": "https://image.cnbcfm.com/api/v1/image/106976847-1637165426358-FZHUMMEREV076.jpg?v=1663793975&w=1920&h=1080",
-        "publishedAt": "2022-09-21T20:59:35Z",
-        "content": "DETROIT General Motors will close reservations for its electric GMC Hummer pickup and the forthcoming GMC Hummer SUV after more than 90,000 of the vehicles were reserved, the company said Wednesday.\r… [+1467 chars]"
-    },
-    {
-        "source": {
-            "id": null,
-            "name": "SciTechDaily"
-        },
-        "author": null,
-        "title": "Don’t Miss: Jupiter To Reach Opposition, Closest Approach to Earth in 59 Years! - SciTechDaily",
-        "description": "When Jupiter reaches opposition on Monday, September 26, stargazers can expect incredible views of Jupiter the entire night. From the viewpoint of Earth’s surface, opposition occurs when an astronomical object rises in the east as the Sun sets in the west, pl…",
-        "url": "https://scitechdaily.com/dont-miss-jupiter-to-reach-opposition-closest-approach-to-earth-in-59-years/",
-        "urlToImage": "https://scitechdaily.com/images/Deep-Jet-Streams-in-Jupiters-Atmosphere.jpg",
-        "publishedAt": "2022-09-21T20:39:01Z",
-        "content": "ByLane Figueroa, NASASeptember 21, 2022\r\nThis view of Jupiters turbulent atmosphere from NASAs Juno spacecraft includes several of the planets southern jet streams. Citizen scientist Tanya Oleksuik c… [+5379 chars]"
-    },
-    {
-        "source": {
-            "id": null,
-            "name": "National Institutes of Health"
-        },
-        "author": null,
-        "title": "Two popular diabetes drugs outperformed others in large clinical trial - National Institutes of Health (.gov)",
-        "description": "NIH-funded researchers complete first study comparing commonly used type 2 diabetes medications.",
-        "url": "https://www.nih.gov/news-events/news-releases/two-popular-diabetes-drugs-outperformed-others-large-clinical-trial",
-        "urlToImage": "https://www.nih.gov/sites/default/files/news-events/news-releases/2022/20220921-diabetes.jpg",
-        "publishedAt": "2022-09-21T20:33:36Z",
-        "content": null
-    }
-]
+  articles = []
 
+  static defaultProps = {
+    pageSize: 1,
+    country: "us",
+    category: "science"
+  }
 
-  constructor(){
+  static propTypes = {
+    pageSize: PropTypes.string,
+    country: PropTypes.string,
+    category: PropTypes.string
+  }
+
+  constructor() {
     super();
-    this.state={
-      articles:this.articles,
-      loading:false
+    this.state = {
+      articles: this.articles,
+      loading: false,
+      page: 1,
+      totalResults: 0
     }
+
+  }
+
+  capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
 
-  async componentDidMount(){
-    console.log("cdm");
-    let data = await fetch("https://newsapi.org/v2/top-headlines?country=us;kn-0&apiKey=262b9c52a1cc4ae1a27ecc788d730509");
+  async newsUpdate() {
+    this.props.setProgress(10);
+    this.setState({ loading: true });
+    this.props.setProgress(30);
+    let data = await fetch(`https://newsapi.org/v2/top-headlines?country=${this.props.country}&page=${this.state.page}&pageSize=${this.props.pageSize}&category=${this.props.category}&apiKey=${this.props.apiKey}`);
     let parsedData = await data.json();
-    this.setState({articles:parsedData.articles});
+    this.setState({
+      articles: parsedData.articles, totalResults: parsedData.totalResults,
+      loading: false
+    });
+    this.props.setProgress(100);
   }
+
+  async componentDidMount() {
+    document.title = `News Monkey - ${this.capitalizeFirstLetter(this.props.category)}`;
+    this.newsUpdate();
+  }
+
+
+  fetchMoreData = async () => {
+    this.setState({ page: this.state.page + 1 });
+    this.setState({ loading: true });
+    let data = await fetch(`https://newsapi.org/v2/top-headlines?country=${this.props.country}&page=${this.state.page + 1}&pageSize=${this.props.pageSize}&category=${this.props.category}&apiKey=${this.props.apiKey}`);
+    let parsedData = await data.json();
+    this.setState({
+      articles: this.state.articles.concat(parsedData.articles),
+      totalResults: parsedData.totalResults,
+      loading: false
+    });
+  };
+
+
+
+
   render() {
-    
+
     return (
-      
-      <div className="container my-3">
-        <h2>NewsMonkey - Top Headlines</h2>
 
+      <>
+        <h2 className='text-center'>NewsMonkey - Top Headlines</h2>
 
-        <div className="row">
-{this.state.articles.map((element)=>{
-          return <div className="col-md-4" key={element.url}>
-        <Newsitem  title={element?element.title.slice(0,45):""} description ={element?element.description.slice(0,88):""} imageUrl={element.urlToImage} newsUrl={element.url}/>
-          </div>       
-})}
-        </div>
-        
-      </div>
-     
+        {/* {this.state.loading && <Spinner />} */}
+        <InfiniteScroll
+          dataLength={this.state.articles.length}
+          next={this.fetchMoreData}
+          hasMore={this.state.articles.length !== this.state.totalResults}
+          loader={<Spinner />}
+        >
+          <div className="container">
+            <div className="row">
+              {this.state.articles.map((element) => {
+                return <div className="col-md-4" key={element.url}>
+                  <Newsitem title={element ? element.title : ""} description={element ? element.description : ""} imageUrl={element.urlToImage} newsUrl={element.url} author={element.author} date={element.publishedAt} />
+                </div>
+              })}
+            </div>
+          </div>
+        </InfiniteScroll>
+      </>
+
     )
   }
 }
